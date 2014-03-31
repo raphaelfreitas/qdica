@@ -1,4 +1,25 @@
 <?php
+
+/** Absolute path to the WordPress directory. */
+if ( !defined('ABSPATH') )
+	define('ABSPATH', dirname(__FILE__) . '/');
+
+$__hasconfigured = false;
+$__configuration_files = array(
+	'localhost' => "wp-config-localhost.php",
+	'qa' => "wp-config-qa.php",
+);
+foreach ($__configuration_files as $enviroment => $file) {
+	if( file_exists( ABSPATH . $file ) && !$__hasconfigured) {
+		require_once( ABSPATH . $file );
+
+		$__hasconfigured = true;
+
+		define('WP_ENV', $enviroment);
+	}
+}
+
+if( !$__hasconfigured ) {
 /**
  * The base configurations of the WordPress.
  *
@@ -32,7 +53,7 @@ define('DB_CHARSET', 'utf8');
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
-
+}
 /**#@+
  * Authentication Unique Keys and Salts.
  *
